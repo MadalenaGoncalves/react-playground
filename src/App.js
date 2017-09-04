@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import './App.css';
 import moment from 'moment';
 
@@ -96,6 +96,15 @@ const Event = ({item}) =>
     </div>
   </div>
 
+Event.PropTypes = {
+  item: PropTypes.shape({
+    date_begin: PropTypes.string.isRequired,
+    date_end: PropTypes.string,
+    group_name: PropTypes.string,
+    participants_count: PropTypes.number,
+  }),
+}
+
 const Button = ({ onClick, children }) =>
   <button
     onClick={onClick}
@@ -104,5 +113,9 @@ const Button = ({ onClick, children }) =>
     {children}
   </button>
 
+Button.PropTypes = {
+  onClick: PropTypes.func.isRequired,
+  children: PropTypes.node,
+}
 
 export default App;
