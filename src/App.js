@@ -5,7 +5,7 @@ import moment from 'moment';
 const DEFAULT_HAS_TAGS = 'fitness';
 const DEFAULT_IS_PUBLISHED = 'true';
 const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 6;
+const DEFAULT_PAGE_SIZE = 2;
 const DEFAULT_ORDER = 'asc';
 const DEFAULT_SORT = 'date_begin';
 
@@ -52,12 +52,15 @@ class App extends Component {
 
     const updatedEvents = [...oldEvents,...events];
 
+
     this.setState({
       events: {
         ...events,
         [date]: {
           list : updatedEvents,
-          page: meta.page
+          page: meta.page,
+          total: meta.rowCount,
+          retrieved: meta.pageSize*meta.page,
         }
       }
     });
@@ -67,15 +70,16 @@ class App extends Component {
 
   render() {
     const date = moment().format('YYYY-MM-DDThh:00:00');
-    const list = (
-      this.state.events &&
-      this.state.events[date] &&
-      this.state.events[date].list
-    ) || [];
+    const {events} = this.state;
+    const page = ( events && events[date] && events[date].page ) || 0;
+    const list = ( events && events[date] && events[date].list ) || [];
+    const total = ( events && events[date] && events[date].total ) || 0;
+    const retrieved = ( events && events[date] && events[date].retrieved ) || 0;
+
     return (
       <div>
         {list.map( (event) => <Event key={event.id} item={event} /> )}
-        <Button>Show more</Button>
+        {(retrieved < total) && <Button onClick={() => this.fetchEventsAfterDate(date,page+1)}>Show more</Button>}
       </div>
     );
   }
