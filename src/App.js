@@ -1,6 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import moment from 'moment';
+import Button from './Button';
+import Event from './Event';
 
 const DEFAULT_HAS_TAGS = 'fitness';
 const DEFAULT_IS_PUBLISHED = 'true';
@@ -52,7 +54,6 @@ class App extends Component {
 
     const updatedEvents = [...oldEvents,...events];
 
-
     this.setState({
       events: {
         ...events,
@@ -64,58 +65,27 @@ class App extends Component {
         }
       }
     });
-
   }
-
 
   render() {
     const date = moment().format('YYYY-MM-DDThh:00:00');
-    const {events} = this.state;
-    const page = ( events && events[date] && events[date].page ) || 0;
-    const list = ( events && events[date] && events[date].list ) || [];
-    const total = ( events && events[date] && events[date].total ) || 0;
-    const retrieved = ( events && events[date] && events[date].retrieved ) || 0;
+    const { events } = this.state;
+    const page = (events && events[date] && events[date].page) || 0;
+    const list = (events && events[date] && events[date].list) || [];
+    const total = (events && events[date] && events[date].total) || 0;
+    const retrieved = (events && events[date] && events[date].retrieved) || 0;
 
     return (
       <div>
-        {list.map( (event) => <Event key={event.id} item={event} /> )}
-        {(retrieved < total) && <Button onClick={() => this.fetchEventsAfterDate(date,page+1)}>Show more</Button>}
+        {list.map( (event) =>
+          <Event key={event.id} item={event} />
+        )}
+        {(retrieved < total) &&
+          <Button onClick={() => this.fetchEventsAfterDate(date,page+1)}>Show more</Button>
+        }
       </div>
     );
   }
-}
-
-
-const Event = ({item}) =>
-  <div>
-    <div>{moment(item.date_begin).format('DD-MM-YYYY')}</div>
-    <div>{moment(item.date_begin).format('hh:mm')} - {moment(item.date_end).format('hh:mm')}
-      <span>{item.group_name}</span>
-      <span>total participants: {item.participants_count}</span>
-      {/* <Button>Book</Button> */}
-    </div>
-  </div>
-
-Event.PropTypes = {
-  item: PropTypes.shape({
-    date_begin: PropTypes.string.isRequired,
-    date_end: PropTypes.string,
-    group_name: PropTypes.string,
-    participants_count: PropTypes.number,
-  }),
-}
-
-const Button = ({ onClick, children }) =>
-  <button
-    onClick={onClick}
-    type="button"
-  >
-    {children}
-  </button>
-
-Button.PropTypes = {
-  onClick: PropTypes.func.isRequired,
-  children: PropTypes.node,
 }
 
 export default App;
