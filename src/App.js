@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import moment from 'moment';
 import Button from './Button';
 import Event from './Event';
@@ -28,6 +27,8 @@ class App extends Component {
 
     this.state = {
       events: null,
+      coaches: ['Livia', 'Andreas', 'Kristina'],
+      places: ['Weinbergspark', 'Lietzensee'],
     };
 
     this.fetchEventsAfterDate = this.fetchEventsAfterDate.bind(this);
@@ -42,7 +43,10 @@ class App extends Component {
     dateBegin = encodeURIComponent(dateBegin);
     fetch(`${PATH_BASE}${PATH_EVENTS}?${PARAM_BEGINS_AFTER}${dateBegin}&${PARAM_HAS_TAGS}${DEFAULT_HAS_TAGS}&${PARAM_IS_PUBLISHED}${DEFAULT_IS_PUBLISHED}&${PARAM_ORDER}${DEFAULT_ORDER}&${PARAM_PAGE}${page}&${PARAM_PAGE_SIZE}${DEFAULT_PAGE_SIZE}&${PARAM_SORT}${DEFAULT_SORT}`)
       .then(response => response.json())
-      .then(result => this.setEvents(result));
+      .then(result => {
+        console.log(result)
+        return this.setEvents(result)
+      })
   }
 
   setEvents(result) {
@@ -62,14 +66,15 @@ class App extends Component {
           page: meta.page,
           total: meta.rowCount,
           retrieved: meta.pageSize*meta.page,
-        }
+        },
       }
     });
   }
 
   render() {
+    const { events, coaches, places } = this.state;
+
     const date = moment().format('YYYY-MM-DDThh:00:00');
-    const { events } = this.state;
     const page = (events && events[date] && events[date].page) || 0;
     const list = (events && events[date] && events[date].list) || [];
     const total = (events && events[date] && events[date].total) || 0;
@@ -77,12 +82,30 @@ class App extends Component {
 
     return (
       <div>
+        <h3>Our workouts</h3>
         {list.map( (event) =>
           <Event key={event.id} item={event} />
         )}
         {(retrieved < total) &&
           <Button onClick={() => this.fetchEventsAfterDate(date,page+1)}>Show more</Button>
         }
+
+        <br />
+
+        <h3>Our coaches</h3>
+        <ul>
+          {coaches.map( (coach) =>
+            <li key={coach}>{coach}</li>
+          )}
+        </ul>
+
+        <h3>Our Spots</h3>
+        <ul>
+          {places.map( (place) =>
+            <li key={place}>{place}</li>
+          )}
+        </ul>
+
       </div>
     );
   }

@@ -1,14 +1,14 @@
-import React, { PropTypes } from 'react';
-import moment from 'moment';
+import React, { PropTypes } from 'react'
+import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 const Event = ({item}) =>
-  <div>
-    <div>{moment(item.date_begin).format('DD-MM-YYYY')}</div>
-    <div>{moment(item.date_begin).format('hh:mm')} - {moment(item.date_end).format('hh:mm')}
-      <span>{item.group_name}</span>
-      <span>total participants: {item.participants_count}</span>
-      {/* <Button>Book</Button> */}
-    </div>
+  <div style={{display:'flex', flexDirection:'row'}}>
+    <div style={{marginRight:'10px'}}>{moment(item.date_begin).format('DD-MM-YYYY')}</div>
+    <div style={{marginRight:'10px'}}>{moment(item.date_begin).format('hh:mm')} - {moment(item.date_end).format('hh:mm')}</div>
+    <div style={{marginRight:'10px'}}>{item.group_name}</div>
+    <div style={{marginRight:'10px'}}>total participants: {item.participants_count}</div>
+    {/* <Link to={}>see details</Link> */}
   </div>
 
 Event.PropTypes = {
