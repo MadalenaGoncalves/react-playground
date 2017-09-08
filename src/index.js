@@ -16,7 +16,7 @@ const routes = [
   },
   { path: '/plans',
     sidebar: () => <div>plans</div>,
-    main: () => <h2>This is the plans page - i am dumb</h2>
+    main: () => <h2>This is the plans page - i am dumb... or maybe not</h2>
   },
   { path: '/facts',
     sidebar: () => <div>/facts</div>,

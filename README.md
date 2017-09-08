@@ -2,7 +2,6 @@
 
 Based on the initial folder structure created with `react-create-app`.
 
-
 ```
 my-app
 ├── README.md
@@ -14,15 +13,8 @@ my-app
 │   └── index.html
 │   └── manifest.json
 └── src
-    └── App.js ????????????
-    └── App.test.js
     └── index.js
-    └── views
-        └── user
-        └── coach
-        └── sysadmin
-        └── common
-            └── translations
+    └── views (components)
     └── state (redux, mobx ? - ducks/re-ducks ?)
     └── services ?
         └── auth
@@ -35,79 +27,85 @@ my-app
             └── App.css
             └── index.css
         └── images
-            └── logo.svg
         └── fonts
     └── ...
 ```
+
 ### Motivation
 - Views & State separation: Always separate State Management from UI files  (https://medium.freecodecamp.org/scaling-your-redux-app-with-ducks-6115955638be)
-- Tests: Having a dedicated `.test.js` file alongside to its component keeps it easier to keep track which components have tests and which don't. Having a `tests` folder apart from the views, might become cumbersome and hard to maintain. (https://www.sitepoint.com/organize-large-react-application/) (The same might apply for `state`)
+- Tests: Having a dedicated `.spec.js` file alongside to its component keeps it easier to keep track which components have tests and which don't. Having a `tests` folder apart from the views, might become cumbersome and hard to maintain. (https://www.sitepoint.com/organize-large-react-application/) (The same might apply for `state`)
 - Common views: very generic and reused components such as `buttons`, headers (`h1`, `h2`, ...), form inputs (input, textarea, but also more complex ones like `power-select`, `date-pickers`, ...). Also `header`, `footer` or `sidebar` (as currently used in the menu) can be implemented here.
 - Translations: Shall we keep a similar structure to what we have in ember ?
 - Services: External libraries or services. All non-react-component javascript.
 
 
-### Views structure
-Option 1 (COACH and SYSADMIN shall follow):
+### Components structure
+Option 1 : ~~pages + components~~ Views + Controllers
 ```
-user
-├── pages
-│   └── home.js
-│   └── home.test.js
-│   └── about.js
-│   └── about.test.js
+components
+├── controllers
+│   └── index.js  -- inital routes, auth logic, no-login page ?
+│   └── index.spec.js
+│   └── login.js
+│   └── signup.js
+│   └── logged-in.js
+│   └── no-login.js
+│   └── not-found.js
+│   └── ...
 │   └── coach.js
 │   └── event.js
-│   └── fitness-facts.js
-│   └── plans-pricing.js
+│   └── profile.js
 │   └── profile-account.js
 │   └── profile-events.js
 │   └── profile-general.js
 │   └── profile-results.js
 │   └── ...
-├── components
+├── views
+│   └── about.js
+│   └── fitness-facts.js
+│   └── plans-pricing.js
 │   └── home-events.js
 │   └── home-coaches.js
 │   └── home-places.js
-│   └── profile.js   (a wrapper component for the actual relevant pages: profile-account, profile-events, ... - is this intuitive? practical? scalable?)
+│   └── profile.js   (a wrapper component for relevant pages: account, my-events, ... - is it intuitive? practical? scalable?)
 │   └── ...
 ├── translations
-│   └── en
-│       └── page
-│       └── component
-│       └── ... (similar to ember-structure ? )
-│   └── ...
-├── App.js
-└── App.test.js
+    ├── en
+    │   └── page
+    │   └── component
+    │   └── ... (similar to ember-structure ? )
+    └── ...
 ```
 
-Option 2:
+Option 2: Views Feature-First
 ```
-user
-├── app.js
-├── app.test.js
+views
+├── index.js  -- inital routes, auth,
+├── index.spec.js
+│   └── auth
+│       └── login.js
+│       └── signup.js
+│       └── logged-in.js
 │   └── home
 │       └── home.js
-│       └── home.test.js
+│       └── not-found.js
 │       └── events
 │           └── events.js
 │       └── coaches
+│           └── ...
 │       └── places
+│           └── ...
 │   └── about
 │   └── fitness-facts.js
 │   └── profile
 │       └── profile.js
-│       └── profile.test.js
 │       └── account
 │           └── account.js
-│           └── account.test.js
 │       └── events
 │           └── events.js
-│           └── events.test.js
 │       └── ...
 │   └── coach
 │       └── coach.js
-│       └── coach.test.js
 │   └── ...
 ├── translations
 │   └── en
@@ -117,11 +115,64 @@ user
 │       └── ...
 │       └── index.js
 │   └── ...
-
 ```
 
-### Naming/Coding conventions
-- Pages/Components naming: (applies only to opt1)
-- Tests naming: Either it's for UI or state, always use `.test.js`
+Option 2: Views + Controllers, Feature-First
+```
+components
+├── controllers
+│   └── index.js  -- inital routes
+│   └── auth
+│       └── loginPage.js
+│       └── signupPage.js
+│   └── menu.js (calls sidebar and navbar components)
+│   └── homePage.js (calls menu controller, page component, ...)
+│   └── user
+│       └── accountPage.js
+│       └── eventsPage.js
+│       └── ...
+│   └── coachDetailPage.js
+│   └── eventDetailPage.js
+│   └── admin
+│       └── ...
+│   └── ...
+├── views
+│   └── auth
+│       └── login.js
+│       └── signup.js
+│   └── about.js
+│   └── fitness-facts.js
+│   └── user.js
+│   └── admin
+│       └── ...
+│   └── ...
+│   └── common
+│       └── Button
+│       └── List
+│       └── ...
+│   └── layout
+│       └── Page
+│       └── Sidebar
+│       └── Navbar
+│       └── ...
+
+```
+Notes:
+- Controllers examples: UserPage, FollowersSidebar, StoryContainer, FollowedUserList
+  - can be stateless
+- Views examples: Page, Sidebar, Story, UserInfo, List
+  - are only presentational, but can have state (UI state rather than data)
+- See: https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0 and https://gist.github.com/chantastic/fc9e3853464dffdb1e3c
+
+### Naming conventions
+- Pages/Components: ...
+- Tests: Either it's for UI or state, always use `.spec.js`
 - .jsx vs .js ?
+
+### Coding conventions
 - one react component per file
+
+### Structure
+- Smart components + Route wrappers + dumb components ?
+- Not all pages will be smart: static pages such as about are merely presentational.
+- A separation by smart/dumb components makes it easier to apply rules such as "dumb components don't expose anything to the outside"
