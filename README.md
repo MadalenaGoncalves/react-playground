@@ -117,46 +117,48 @@ views
 │   └── ...
 ```
 
-Option 2: Views + Controllers, Feature-First
+Option 3: Views + Controllers (or Presentational + Containers), Feature-First
 ```
 components
-├── controllers
-│   └── index.js  -- inital routes
+├── controllers/containers
 │   └── auth
-│       └── loginPage.js
-│       └── signupPage.js
-│   └── menu.js (calls sidebar and navbar components)
-│   └── homePage.js (calls menu controller, page component, ...)
+│       └── LoginPage.js
+│       └── SignupPage.js
 │   └── user
-│       └── accountPage.js
-│       └── eventsPage.js
+│       └── AccountPage.js
+│       └── EventsPage.js
 │       └── ...
-│   └── coachDetailPage.js
-│   └── eventDetailPage.js
 │   └── admin
 │       └── ...
+│   └── index.js  -- inital routes
+│   └── MenuContainer.js (calls sidebar and navbar components)
+│   └── HomePage.js (calls menu controller, page component, ...)
+│   └── CoachDetailPage.js
+│   └── EventDetailPage.js
 │   └── ...
-├── views
+├── views/presentational
+│   └── admin
+│       └── ...
 │   └── auth
-│       └── login.js
-│       └── signup.js
-│   └── about.js
-│   └── fitness-facts.js
-│   └── user.js
-│   └── admin
-│       └── ...
-│   └── ...
+│       └── Login.js
+│       └── Signup.js
 │   └── common
-│       └── Button
-│       └── List
+│       └── Button.js
+│       └── H1.js
 │       └── ...
 │   └── layout
-│       └── Page
-│       └── Sidebar
-│       └── Navbar
+│       └── Page.js (renders menuContainer + children)
+│       └── Sidebar.js
+│       └── Navbar.js
+│       └── Footer.js
+│       └── List.js
 │       └── ...
-
+│   └── About.js
+│   └── FitnessFacts.js
+│   └── User.js
+│   └── ...
 ```
+
 Notes:
 - Controllers examples: UserPage, FollowersSidebar, StoryContainer, FollowedUserList
   - can be stateless
@@ -176,3 +178,7 @@ Notes:
 - Smart components + Route wrappers + dumb components ?
 - Not all pages will be smart: static pages such as about are merely presentational.
 - A separation by smart/dumb components makes it easier to apply rules such as "dumb components don't expose anything to the outside"
+
+
+### Internationalization
+Possible plugins: [react-intl](https://github.com/yahoo/react-intl/wiki#getting-started), [react-i18next](https://github.com/i18next/react-i18next)
