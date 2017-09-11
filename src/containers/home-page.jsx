@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import Button from './Button';
-import Event from './Event';
+import Button from './../components/common/button.jsx';
+import Workout from './../components/workout.jsx';
 
 const DEFAULT_HAS_TAGS = 'fitness';
 const DEFAULT_IS_PUBLISHED = 'true';
@@ -21,7 +21,7 @@ const PARAM_ORDER = 'order=';
 const PARAM_SORT = 'sort=';
 
 
-class App extends Component {
+export default class HomePage extends Component {
   constructor(props) {
     super(props);
 
@@ -82,9 +82,12 @@ class App extends Component {
 
     return (
       <div>
-        <h3>Our workouts</h3>
+        <h3>Our Workouts</h3>
+        {/* <h3><FormattedMessage id="app.our_workouts" /></h3> */}
+
+
         {list.map( (event) =>
-          <Event key={event.id} item={event} />
+          <Workout key={event.id} item={event} />
         )}
         {(retrieved < total) &&
           <Button onClick={() => this.fetchEventsAfterDate(date,page+1)}>Show more</Button>
@@ -92,7 +95,8 @@ class App extends Component {
 
         <br />
 
-        <h3>Our coaches</h3>
+        <h3>Our Coaches</h3>
+        {/* <h3><FormattedMessage id="app.our_coaches" /></h3> */}
         <ul>
           {coaches.map( (coach) =>
             <li key={coach}>{coach}</li>
@@ -100,6 +104,7 @@ class App extends Component {
         </ul>
 
         <h3>Our Spots</h3>
+        {/* <h3><FormattedMessage id="app.our_spots" /></h3> */}
         <ul>
           {places.map( (place) =>
             <li key={place}>{place}</li>
@@ -110,5 +115,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

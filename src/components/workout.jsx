@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import { PropTypes } from 'prop-types'
 import moment from 'moment'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 const Event = ({item}) =>
   <div style={{display:'flex', flexDirection:'row'}}>

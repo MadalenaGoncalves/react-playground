@@ -1,6 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 
 const routes = [
   {
@@ -24,13 +23,6 @@ const routes = [
     main: () => <p>I am the UserAccount component - I am SMART</p>
   }
 ]
-
-
-// const User = ({ match }) => (
-//   <div>
-//     <h2>User: {match.params.user}</h2>
-//   </div>
-// )
 
 const User = (props) =>
   <div>

@@ -31,6 +31,10 @@ my-app
     └── ...
 ```
 
+The application entry point is `/src/index.js`.
+This is responsible for initializing the routing service, state, translations, styling, ...
+Apart from this, it also renders one single component (`App`) from where all the application routes and components will emerge.
+
 ### Motivation
 - Views & State separation: Always separate State Management from UI files  (https://medium.freecodecamp.org/scaling-your-redux-app-with-ducks-6115955638be)
 - Tests: Having a dedicated `.spec.js` file alongside to its component keeps it easier to keep track which components have tests and which don't. Having a `tests` folder apart from the views, might become cumbersome and hard to maintain. (https://www.sitepoint.com/organize-large-react-application/) (The same might apply for `state`)
@@ -182,3 +186,11 @@ Notes:
 
 ### Internationalization
 Possible plugins: [react-intl](https://github.com/yahoo/react-intl/wiki#getting-started), [react-i18next](https://github.com/i18next/react-i18next)
+Intl:
+- provides formatted dates (which replaces momentjs), numbers and text
+- no common configuration file?
+- react-intl-redux : for future integration
+- babel-plugin-react-intl: string messages from React components that use React Intl
+i18next:
+- not react-only
+- locize
