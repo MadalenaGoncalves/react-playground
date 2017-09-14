@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const divStyle = { marginRight:'10px' }
 
-const WorkoutList = ({item}) =>
+const WorkoutListItem = ({item}) =>
   <div style={{display:'flex', flexDirection:'row'}}>
     <div style={divStyle}>{moment(item.date_begin).format('DD-MM-YYYY')}</div>
     <div style={divStyle}>{moment(item.date_begin).format('hh:mm')} - {moment(item.date_end).format('hh:mm')}</div>
@@ -19,7 +19,7 @@ const WorkoutList = ({item}) =>
     </div>
   </div>
 
-WorkoutList.PropTypes = {
+WorkoutListItem.PropTypes = {
   item: PropTypes.shape({
     date_begin: PropTypes.string.isRequired,
     date_end: PropTypes.string,
@@ -28,4 +28,4 @@ WorkoutList.PropTypes = {
   }),
 }
 
-export default WorkoutList;
+export default WorkoutListItem;

@@ -10,6 +10,7 @@ export const PATH_EVENTS = '/events';
 export const PARAM_BEGINS_AFTER = 'begins_after=';
 export const PARAM_HAS_TAGS = 'has_tags%5B%5D=';
 export const PARAM_IS_PUBLISHED = 'is_published=';
+export const PARAM_DISTRICT = 'place_district_code=';
 
 // Page query params
 export const PARAM_PAGE = 'page=';

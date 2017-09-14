@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom'
 
 const divStyle = { marginRight:'10px' }
 
-const GroupList = ({item}) => {
-  console.log('@GroupList', item);
+const GroupListItem = ({item}) => {
   return (
     <div style={{display:'flex', flexDirection:'row'}}>
       <div style={divStyle}>{item.name}</div>
@@ -18,7 +17,7 @@ const GroupList = ({item}) => {
   )
 
 }
-GroupList.PropTypes = {
+GroupListItem.PropTypes = {
   item: PropTypes.shape({
     date_begin: PropTypes.string.isRequired,
     date_end: PropTypes.string,
@@ -27,4 +26,4 @@ GroupList.PropTypes = {
   }),
 }
 
-export default GroupList;
+export default GroupListItem;

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import Button from './../components/common/button.jsx';
-import WorkoutList from './../components/workout-list.jsx';
-import GroupList from './../components/group-list.jsx'
+import WorkoutListItem from './../components/workout-list-item.jsx';
+import GroupListItem from './../components/group-list-item.jsx'
+import withFilter from './../components/common/withFilter.jsx'
 import {
   PATH_BASE,
   PATH_EVENTS,
@@ -10,6 +11,7 @@ import {
   PARAM_BEGINS_AFTER,
   PARAM_HAS_TAGS,
   PARAM_IS_PUBLISHED,
+  PARAM_DISTRICT,
   PARAM_PAGE,
   PARAM_PAGE_SIZE,
   PARAM_ORDER,
@@ -34,14 +36,15 @@ export default class HomePage extends Component {
       places: ['Weinbergspark', 'Lietzensee'],
     };
 
-    this.fetchEventsAfterDate = this.fetchEventsAfterDate.bind(this);
+    this.fetchEvents = this.fetchEvents.bind(this);
     this.setEvents = this.setEvents.bind(this);
     this.fetchGroups = this.fetchGroups.bind(this);
     this.setGroups = this.setGroups.bind(this);
+    this.onChangeFilter = this.onChangeFilter.bind(this);
   }
 
   componentDidMount() {
-    this.fetchEventsAfterDate((moment().format()), DEFAULT_PAGE);
+    this.fetchEvents((moment().format()), DEFAULT_PAGE);
     this.fetchGroups();
   }
 
@@ -49,7 +52,7 @@ export default class HomePage extends Component {
     try {
       fetch(`${PATH_BASE}${PATH_GROUPS}?${PARAM_HAS_TAGS}${DEFAULT_HAS_TAGS}&${PARAM_IS_PUBLISHED}${DEFAULT_IS_PUBLISHED}&${PARAM_ORDER}${DEFAULT_ORDER}&${PARAM_SORT}${GROUP_SORT}`)
         .then(response => response.json())
-        .then(result => { console.log('@fetchGroups',result); return this.setGroups(result)})
+        .then(result => this.setGroups(result))
     }
     catch(e) {
       console.log('Error @fetchGroups ', e);
@@ -57,29 +60,31 @@ export default class HomePage extends Component {
   }
 
   setGroups(result) {
-    console.log('@setGroups',result);
     this.setState({ groups: result.groups });
-    console.log('State', this.state.groups);
   }
 
-  fetchEventsAfterDate(dateBegin, page) {
+  fetchEvents(dateBegin, page) {
     dateBegin = encodeURIComponent(dateBegin);
+    let requestURL = `${PATH_BASE}${PATH_EVENTS}`
+      + `?${PARAM_BEGINS_AFTER}${dateBegin}`
+      + `&${PARAM_HAS_TAGS}${DEFAULT_HAS_TAGS}`
+      + `&${PARAM_IS_PUBLISHED}${DEFAULT_IS_PUBLISHED}`
+      + `&${PARAM_ORDER}${DEFAULT_ORDER}`
+      + `&${PARAM_PAGE}${page}`
+      + `&${PARAM_PAGE_SIZE}${DEFAULT_PAGE_SIZE}`
+      + `&${PARAM_SORT}${EVENT_SORT}`;
+
     try {
-      fetch(`${PATH_BASE}${PATH_EVENTS}?${PARAM_BEGINS_AFTER}${dateBegin}&${PARAM_HAS_TAGS}${DEFAULT_HAS_TAGS}&${PARAM_IS_PUBLISHED}${DEFAULT_IS_PUBLISHED}&${PARAM_ORDER}${DEFAULT_ORDER}&${PARAM_PAGE}${page}&${PARAM_PAGE_SIZE}${DEFAULT_PAGE_SIZE}&${PARAM_SORT}${EVENT_SORT}`)
+      fetch(requestURL)
       .then(response => response.json())
-      .then(result => {
-        console.log(result)
-        return this.setEvents(result)
-      })
+      .then(result => this.setEvents(result))
     }
     catch(e) {
-      console.log('Error @fetchEventsAfterDate ', e);
+      console.log('Error @fetchEvents ', e);
     }
   }
 
   setEvents(result) {
-    console.log('@setEvents',result);
-
     const { events, meta } = result;
     const date = moment().format('YYYY-MM-DDThh:00:00');
     const oldEvents = this.state.events && this.state.events[date] ? this.state.events[date].list : [];
@@ -99,30 +104,100 @@ export default class HomePage extends Component {
     });
   }
 
+  fetchEventsByDistrict(dateBegin, page, district = null) {
+    dateBegin = encodeURIComponent(dateBegin);
+    let requestURL = `${PATH_BASE}${PATH_EVENTS}`
+      + `?${PARAM_BEGINS_AFTER}${dateBegin}`
+      + `&${PARAM_HAS_TAGS}${DEFAULT_HAS_TAGS}`
+      + `&${PARAM_IS_PUBLISHED}${DEFAULT_IS_PUBLISHED}`
+      + `&${PARAM_ORDER}${DEFAULT_ORDER}`
+      + `&${PARAM_PAGE}${page}`
+      + `&${PARAM_PAGE_SIZE}${DEFAULT_PAGE_SIZE}`
+      + `&${PARAM_SORT}${EVENT_SORT}`;
+
+    if(district) {
+      console.log("here");
+      requestURL = `${requestURL}&${PARAM_DISTRICT}${district}`
+    }
+
+    try {
+      fetch(requestURL)
+      .then(response => response.json())
+      .then(result => this.resetEvents(result))
+    }
+    catch(e) {
+      console.log('Error @fetchEventsByDistrict ', e);
+    }
+  }
+
+  resetEvents(result) {
+    const { events, meta } = result;
+    const date = moment().format('YYYY-MM-DDThh:00:00');
+
+    this.setState({
+      events: {
+        ...events,
+        [date]: {
+          list : events,
+          page: meta.page,
+          total: meta.rowCount,
+          retrieved: meta.pageSize*meta.page,
+        },
+      }
+    });
+  }
+
+  onChangeFilter(event) {
+    console.log('onChangeFilter', event.target, event.target.value);
+    const district = event.target.value;
+    this.fetchEventsByDistrict((moment().format()),DEFAULT_PAGE,district);
+  }
+
   render() {
     const { events, coaches, places, groups } = this.state;
     const date = moment().format('YYYY-MM-DDThh:00:00');
     const page = (events && events[date] && events[date].page) || 0;
-    const event_list = (events && events[date] && events[date].list) || [];
+    const eventList = (events && events[date] && events[date].list) || [];
     const total = (events && events[date] && events[date].total) || 0;
     const retrieved = (events && events[date] && events[date].retrieved) || 0;
-    const group_list = groups || [];
+    const groupList = groups || [];
+
+    const filterList = [
+      { value: 'mitte', label: 'Mitte' },
+      { value: 'charlottenburg', label: 'Charlottenburg-Wilmersdorf' },
+    ];
+    // const WorkoutList =
+    //   <div>
+    //     {eventList.map( (event, index) =>
+    //       <WorkoutListItem key={index} item={event} />
+    //     )}
+    //     {(retrieved < total) &&
+    //       <Button onClick={() => this.fetchEvents(date,page+1)}>Show more</Button>
+    //     }
+    //   </div>;
 
     return (
       <div>
         <h3>Our Workouts</h3>
-        {event_list.map( (event, index) =>
-          <WorkoutList key={index} item={event} />
+        {/* {withFilter(WorkoutList, filterList, onChangeFilter)} */}
+        <div>
+          <button onClick={this.onChangeFilter}>All</button>
+          {filterList.map((item) =>
+            <button key={item.value} value={item.value} onClick={this.onChangeFilter}>{item.label}</button>
+          )}
+        </div>
+        {eventList.map((event, index) =>
+          <WorkoutListItem key={index} item={event} />
         )}
         {(retrieved < total) &&
-          <Button onClick={() => this.fetchEventsAfterDate(date,page+1)}>Show more</Button>
+          <Button onClick={() => this.fetchEvents(date,page+1)}>Show more</Button>
         }
 
         <br />
 
         <h3>Our Groups</h3>
-        {group_list.map( (group) =>
-          <GroupList key={group.id} item={group} />
+        {groupList.map( (group) =>
+          <GroupListItem key={group.id} item={group} />
         )}
 
         <br />
