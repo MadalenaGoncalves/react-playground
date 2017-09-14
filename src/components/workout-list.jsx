@@ -1,8 +1,7 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
 import moment from 'moment'
-import { Link, Route } from 'react-router-dom'
-import WorkoutDetailPage from './../containers/workout-detail-page.jsx'
+import { Link } from 'react-router-dom'
 
 const divStyle = { marginRight:'10px' }
 
@@ -18,9 +17,6 @@ const WorkoutList = ({item}) =>
     <div style={divStyle}>
       <Link to={`/workout/${item.id}`}>Workout details link</Link>
     </div>
-
-
-    <Route path="/workout/:id" component={ () => <WorkoutDetailPage /> } />
   </div>
 
 WorkoutList.PropTypes = {

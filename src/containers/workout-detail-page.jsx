@@ -2,10 +2,7 @@ import React from 'react'
 // import { PropTypes } from 'prop-types'
 import moment from 'moment'
 import Button from './../components/common/button.jsx'
-
-
-const PATH_BASE = 'https://api-sg.sportmaps.de/api/v1/mat';
-const PATH_EVENT = '/events';
+import { PATH_BASE, PATH_EVENT } from './../config.js'
 
 class WorkoutDetailPage extends React.Component {
   constructor(props) {
@@ -25,13 +22,18 @@ class WorkoutDetailPage extends React.Component {
   }
 
   fetchEvent(id) {
-    // /admin/event/a44eea9f-d9ba-43be-8541-fba0af004341/dashboard
-    fetch(`${PATH_BASE}${PATH_EVENT}?id=${this.state.id}`)
-      .then(response => response.json())
-      .then(result => {
-        const event = result.events.filter((e) => e.event_id === this.state.id)[0];
-        return this.setEvent(event);
-      })
+    try {
+      const requestURL = `${PATH_BASE}${PATH_EVENT}?id=${this.state.id}`;
+      fetch(requestURL)
+        .then(response => response.json())
+        .then(result => {
+          const event = result.events.filter((e) => e.event_id === this.state.id)[0];
+          return this.setEvent(event);
+        })
+    }
+    catch(e) {
+      console.log('Error @fetchEvent ', e);
+    }
   }
 
   setEvent(ev) {
