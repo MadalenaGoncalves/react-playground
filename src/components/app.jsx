@@ -33,13 +33,13 @@ const App = (props) =>
     <Sidebar />
 
     <div style={{ flex: 1, padding: '10px' }}>
-     {rootRoutes.map((route, index) => (
-       <Route
-         key={index}
-         path={route.path}
-         exact={route.exact}
-         component={route.main}
-       />
+      {rootRoutes.map((route, index) => (
+        <Route
+          key={index}
+          path={route.path}
+          exact={route.exact}
+          render={route.main}
+        />
      ))}
    </div>
   </div>

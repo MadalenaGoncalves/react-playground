@@ -19,19 +19,8 @@ const WorkoutList = ({item}) =>
       <Link to={`/workout/${item.id}`}>Workout details link</Link>
     </div>
 
-    <Route
-      path="/workout/:id"
-      component={
-        <WorkoutDetailPage test="test"
-          // id={item.id}
-          // group={item.group_name}
-          // dateBegin={item.dateBegin}
-          // dateEnd={item.dateEnd}
-          // participants={item.participants}
-          // onBook={item.handleBooking()}
-        />}
-    />
 
+    <Route path="/workout/:id" component={ () => <WorkoutDetailPage /> } />
   </div>
 
 WorkoutList.PropTypes = {
