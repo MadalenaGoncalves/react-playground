@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Redirect, Switch } from 'react-router-dom'
 import Profile from './../containers/user/profile-page.jsx'
 import Workouts from './../containers/user/workouts-page.jsx'
 import Results from './../containers/user/results-page.jsx'
@@ -47,13 +47,18 @@ const User = (props) =>
         </ul>
       </div>
       <div style={{ padding: '0 10px' }}>
-        {routes.map((route, index) => (
-          <Route
-            key={index}
-            path={`/user/${route.path}`}
-            component={route.main}
-          />
-        ))}
+
+        <Switch>
+          {routes.map((route, index) => (
+            <Route
+              key={index}
+              path={`/user/${route.path}`}
+              component={route.main}
+            />
+          ))}
+          <Redirect from="/user" exact to="/user/profile" />
+        </Switch>
+
       </div>
     </div>
   </div>
