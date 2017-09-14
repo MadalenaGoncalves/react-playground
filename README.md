@@ -2,6 +2,10 @@
 
 Based on the initial folder structure created with `react-create-app`.
 
+The application entry point is `/src/index.js`.
+This is responsible for initializing the routing service, state, translations, styling, ...
+Apart from this, it also renders one single component (`App`) from where all the application routes and components will emerge.
+
 ```
 my-app
 ├── README.md
@@ -14,30 +18,25 @@ my-app
 │   └── manifest.json
 └── src
     └── index.js
-    └── views (components)
+    └── components
+    └── containers
     └── state (redux, mobx ? - ducks/re-ducks ?)
-    └── services ?
+    └── services
         └── auth
         └── maps
         └── geocoding
         └── JWT
         └── ...
-    └── assets ?
+    └── assets
         └── styles
-            └── App.css
-            └── index.css
         └── images
         └── fonts
     └── ...
 ```
 
-The application entry point is `/src/index.js`.
-This is responsible for initializing the routing service, state, translations, styling, ...
-Apart from this, it also renders one single component (`App`) from where all the application routes and components will emerge.
-
 ### Motivation
-- Views & State separation: Always separate State Management from UI files  (https://medium.freecodecamp.org/scaling-your-redux-app-with-ducks-6115955638be)
-- Tests: Having a dedicated `.spec.js` file alongside to its component keeps it easier to keep track which components have tests and which don't. Having a `tests` folder apart from the views, might become cumbersome and hard to maintain. (https://www.sitepoint.com/organize-large-react-application/) (The same might apply for `state`)
+- Views & State separation: Always separate State Management from UI files. See [here](https://medium.freecodecamp.org/scaling-your-redux-app-with-ducks-6115955638be)
+- Tests: Having a dedicated `.spec.js` file alongside to its component keeps it easier to keep track which components have tests and which don't. Having a `tests` folder apart from the views, might become cumbersome and hard to maintain. See [here](https://www.sitepoint.com/organize-large-react-application/). (The same might apply for `state`)
 - Common views: very generic and reused components such as `buttons`, headers (`h1`, `h2`, ...), form inputs (input, textarea, but also more complex ones like `power-select`, `date-pickers`, ...). Also `header`, `footer` or `sidebar` (as currently used in the menu) can be implemented here.
 - Translations: Shall we keep a similar structure to what we have in ember ?
 - Services: External libraries or services. All non-react-component javascript.
@@ -171,9 +170,8 @@ Notes:
 - See: https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0 and https://gist.github.com/chantastic/fc9e3853464dffdb1e3c
 
 ### Naming conventions
-- Pages/Components: ...
+- Components: lower case, dashed names with .jsx extension
 - Tests: Either it's for UI or state, always use `.spec.js`
-- .jsx vs .js ?
 
 ### Coding conventions
 - one react component per file
