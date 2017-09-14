@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import Button from './../components/common/button.jsx';
-import Workout from './../components/workout.jsx';
+import WorkoutList from './../components/workout-list.jsx';
 
 const DEFAULT_HAS_TAGS = 'fitness';
 const DEFAULT_IS_PUBLISHED = 'true';
@@ -87,7 +87,7 @@ export default class HomePage extends Component {
 
 
         {list.map( (event) =>
-          <Workout key={event.id} item={event} />
+          <WorkoutList key={event.id} item={event} />
         )}
         {(retrieved < total) &&
           <Button onClick={() => this.fetchEventsAfterDate(date,page+1)}>Show more</Button>

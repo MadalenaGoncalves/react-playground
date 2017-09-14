@@ -4,6 +4,8 @@ import HomePage from './../containers/home-page.jsx'
 import Sidebar from './layout/sidebar.jsx'
 import About from './about.jsx'
 import User from './user.jsx'
+import Workout from './workout.jsx'
+import WorkoutDetailPage from './../containers/workout-detail-page.jsx'
 
 const rootRoutes = [
   { path: '/',
@@ -19,6 +21,10 @@ const rootRoutes = [
     path: '/user',
     sidebar: () => <div>/user</div>,
     main: () => <User />
+  },
+  {
+    path: '/workout/:id',
+    main: (props) => <WorkoutDetailPage {...props} />
   }
 ];
 
