@@ -1,26 +1,30 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
+import Profile from './../containers/user/profile-page.jsx'
+import Workouts from './../containers/user/workouts-page.jsx'
+import Results from './../containers/user/results-page.jsx'
+import Account from './../containers/user/account-page.jsx'
 
 const routes = [
   {
-    path: 'general',
-    label: 'General',
-    main: () => <p>I am the UserGeneral component - I am SMART</p>
+    path: 'profile',
+    label: 'Profile',
+    main: () => <Profile test='test passing properties' />
   },
   {
-    path: 'events',
-    label: 'Events',
-    main: () => <p>I am the UserEvents component - I am SMART</p>
+    path: 'workouts',
+    label: 'Workouts',
+    main: () => <Workouts />
   },
   {
     path: 'results',
     label: 'Results',
-    main: () => <p>I am the UserResults component - I am SMART</p>
+    main: () => <Results />
   },
   {
     path: 'account',
     label: 'Account',
-    main: () => <p>I am the UserAccount component - I am SMART</p>
+    main: () => <Account />
   }
 ]
 
@@ -54,6 +58,6 @@ const User = (props) =>
     </div>
   </div>
 
-  {/* <Link to={`${match.url}/${route.path}`}>{route.path}</Link> */}
+  /* <Link to={`${match.url}/${route.path}`}>{route.path}</Link> */
 
 export default User;
