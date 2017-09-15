@@ -1,4 +1,5 @@
-export const PATH_BASE = 'https://api-sg.sportmaps.de/api/v1/mat';
+export const PATH_BASE_STAGE = 'https://api-sg.sportmaps.de/api/v1/mat';
+export const PATH_BASE = 'https://api.sportmaps.de/api/v1/mat';
 export const PATH_GROUP = '/groups';
 export const PATH_GROUPS = '/groups';
 

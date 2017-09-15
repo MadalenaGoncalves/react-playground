@@ -35,7 +35,6 @@ const rootRoutes = [
 const App = (props) =>
   <div style={{ display: 'flex' }}>
     <Sidebar />
-
     <div style={{ flex: 1, padding: '10px' }}>
       {rootRoutes.map((route, index) => (
         <Route
