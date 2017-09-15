@@ -1,12 +1,10 @@
 ## Application Structure
 
-Based on the initial folder structure created with `react-create-app`.
+Based on the initial folder structure created by `react-create-app` and the [Airbnb-react style guides](https://github.com/airbnb/javascript/tree/master/react).
 
-The application entry point is `/src/index.js`.
-This is responsible for initializing the routing service, state, translations, styling, ...
-Apart from this, it also renders one single component (`App`) from where all the application routes and components will emerge.
-Everything inside the `/src` folder is accessible with a global import, eg. `import Button form component/common/Button`.
-This project follows [Airbnb react style guides](https://github.com/airbnb/javascript/tree/master/react), except for the naming of files containing jsx. All javascript files (including jsx) in this project use the .js extension.
+The application entry point is `/src/index.js`. Here is loaded the first component: App. (Later we'll add here state, translations, (global stylings?) and other configurations.)
+
+The App component is responsible for initializing the Router and loading the first routes from `/src/routes.js`. Nested routes are dynamically added, whenever necessary. See [React-router v4](https://reacttraining.com/react-router/web/guides/philosophy).
 
 ```
 my-app
@@ -38,21 +36,11 @@ my-app
 
 ### Motivation
 - Views & State separation: Always separate State Management from UI files. See [here](https://medium.freecodecamp.org/scaling-your-redux-app-with-ducks-6115955638be)
-- Tests: Having a dedicated `.spec.js` file alongside to its component keeps it easier to keep track which components have tests and which don't. Having a `tests` folder apart from the views, might become cumbersome and hard to maintain. See [here](https://www.sitepoint.com/organize-large-react-application/). (The same might apply for `state`)
-- Common views: very generic and reused components such as `buttons`, headers (`h1`, `h2`, ...), form inputs (input, textarea, but also more complex ones like `power-select`, `date-pickers`, ...). Also `header`, `footer` or `sidebar` (as currently used in the menu) can be implemented here.
 - Translations: Shall we keep a similar structure to what we have in ember ?
 - Services: External libraries or services. All non-react-component javascript.
 
 
 ## Components structure
-- Follows a Feature-First approach, with a separation between components/containers (or not?)
-- A separation by smart/dumb components makes it easier to apply rules such as "dumb components don't expose anything to the outside"
-- Containers examples: UserPage, FollowersSidebar, StoryContainer, FollowedUserList
-  - can be stateless
-- Components examples: Page, Sidebar, Story, UserInfo, List
-  - are only presentational, but can have state (UI state rather than data)
-- See: https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0 and https://gist.github.com/chantastic/fc9e3853464dffdb1e3c
-
 ```
 src
 ├── containers
@@ -93,10 +81,32 @@ src
 │   └── ...
 ```
 
-### Naming/Coding conventions
-- Tests: Either it's for UI or state, always use `.spec.js`
+Our react components are divided between components/containers.
+Note that:
+- Containers can be stateless
+  - Examples: UserPage, FollowersSidebar, StoryContainer, FollowedUserList
+- Components can have state (UI state rather than data), event though they are merely presentational
+  - Examples: Page, Sidebar, Story, UserInfo, List
+Our motivation for having a components/containers separation:
+- A separation by smart/dumb components makes it easier to apply rules such as "dumb components don't expose anything to the outside".
+For better understanding how we're using this approach, see [this article](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0) by Dan Abramov and [this gist](https://gist.github.com/chantastic/fc9e3853464dffdb1e3c) by Micheal Chan.
+
+Within the components, we also apply the following separation:
+- `/components/common` holds very generic and reused components such as Buttons, Headers (H1, H2, ...), form inputs (Input, Textarea, as well as more complex ones like *Date-picker* or *Power-select*),
+- `/components/layout` holds layout sections such as header, footer, navbar, etc.
+
+Everything inside the `/src` folder is accessible with a global import, eg. `import Button form component/common/Button`.
+
+### Tests
+We also keep tests close to the components: having a dedicated `.spec.js` file alongside to its component keeps it easier to keep track which components have tests and which don't. Having a `tests` folder apart from the views, might become cumbersome and hard to maintain. See more about this motivation  [here](https://www.sitepoint.com/organize-large-react-application/). (The same might apply for `state`)
+
+
+## Naming/Coding conventions
+- We follow the [airbnb style guides](https://github.com/airbnb/javascript/tree/master/react), with the following exceptions:
+  - .js extension: all javascript files, including those containing jsx, use the .js extension.
+- Tests: All test files (UI or state), use `.spec.js`
 - One react component per file
-- See [airbnb style guides](https://github.com/airbnb/javascript/tree/master/react)
+
 
 
 ### Internationalization
