@@ -1,9 +1,9 @@
 import React from 'react'
 import { Route, Link, Redirect, Switch } from 'react-router-dom'
-import Profile from './../containers/user/profile-page.jsx'
-import Workouts from './../containers/user/workouts-page.jsx'
-import Results from './../containers/user/results-page.jsx'
-import Account from './../containers/user/account-page.jsx'
+import Profile from './ProfilePage'
+import Workouts from './WorkoutsPage'
+import Results from './ResultsPage'
+import Account from './AccountPage'
 
 const routes = [
   {
@@ -62,7 +62,5 @@ const User = (props) =>
       </div>
     </div>
   </div>
-
-  /* <Link to={`${match.url}/${route.path}`}>{route.path}</Link> */
 
 export default User;

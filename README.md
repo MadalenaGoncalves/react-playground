@@ -5,6 +5,8 @@ Based on the initial folder structure created with `react-create-app`.
 The application entry point is `/src/index.js`.
 This is responsible for initializing the routing service, state, translations, styling, ...
 Apart from this, it also renders one single component (`App`) from where all the application routes and components will emerge.
+Everything inside the `/src` folder is accessible with a global import, eg. `import Button form component/common/Button`.
+This project follows [Airbnb react style guides](https://github.com/airbnb/javascript/tree/master/react), except for the naming of files containing jsx. All javascript files (including jsx) in this project use the .js extension.
 
 ```
 my-app
@@ -42,109 +44,41 @@ my-app
 - Services: External libraries or services. All non-react-component javascript.
 
 
-### Components structure
-Option 1 : ~~pages + components~~ Views + Controllers
-```
-components
-├── controllers
-│   └── index.js  -- inital routes, auth logic, no-login page ?
-│   └── index.spec.js
-│   └── login.js
-│   └── signup.js
-│   └── logged-in.js
-│   └── no-login.js
-│   └── not-found.js
-│   └── ...
-│   └── coach.js
-│   └── event.js
-│   └── profile.js
-│   └── profile-account.js
-│   └── profile-events.js
-│   └── profile-general.js
-│   └── profile-results.js
-│   └── ...
-├── views
-│   └── about.js
-│   └── fitness-facts.js
-│   └── plans-pricing.js
-│   └── home-events.js
-│   └── home-coaches.js
-│   └── home-places.js
-│   └── profile.js   (a wrapper component for relevant pages: account, my-events, ... - is it intuitive? practical? scalable?)
-│   └── ...
-├── translations
-    ├── en
-    │   └── page
-    │   └── component
-    │   └── ... (similar to ember-structure ? )
-    └── ...
-```
+## Components structure
+- Follows a Feature-First approach, with a separation between components/containers (or not?)
+- A separation by smart/dumb components makes it easier to apply rules such as "dumb components don't expose anything to the outside"
+- Containers examples: UserPage, FollowersSidebar, StoryContainer, FollowedUserList
+  - can be stateless
+- Components examples: Page, Sidebar, Story, UserInfo, List
+  - are only presentational, but can have state (UI state rather than data)
+- See: https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0 and https://gist.github.com/chantastic/fc9e3853464dffdb1e3c
 
-Option 2: Views Feature-First
 ```
-views
-├── index.js  -- inital routes, auth,
-├── index.spec.js
-│   └── auth
-│       └── login.js
-│       └── signup.js
-│       └── logged-in.js
-│   └── home
-│       └── home.js
-│       └── not-found.js
-│       └── events
-│           └── events.js
-│       └── coaches
-│           └── ...
-│       └── places
-│           └── ...
-│   └── about
-│   └── fitness-facts.js
-│   └── profile
-│       └── profile.js
-│       └── account
-│           └── account.js
-│       └── events
-│           └── events.js
-│       └── ...
-│   └── coach
-│       └── coach.js
-│   └── ...
-├── translations
-│   └── en
-│       └── app
-│       └── about
-│       └── fitness-facts
-│       └── ...
-│       └── index.js
-│   └── ...
-```
-
-Option 3: Views + Controllers (or Presentational + Containers), Feature-First
-```
-components
-├── controllers/containers
-│   └── auth
+src
+├── containers
+│   └── Auth
 │       └── LoginPage.js
 │       └── SignupPage.js
-│   └── user
-│       └── AccountPage.js
-│       └── EventsPage.js
-│       └── ...
-│   └── admin
+│   └── UserPage
+│       └── AccountPage.js  --> Stateful container
+│       └── ProfilePage.js
+│       └── ResultsPage.js
+│       └── WorkoutsPage.js
+│       └── index.js        --> Stateless container, wraps up the other stateful user pages
+│       └── index.spec.js
+│       └── index.css
+│   └── Admin
 │       └── ...
 │   └── index.js  -- inital routes
-│   └── MenuContainer.js (calls sidebar and navbar components)
-│   └── HomePage.js (calls menu controller, page component, ...)
-│   └── CoachDetailPage.js
-│   └── EventDetailPage.js
+│   └── MenuContainer
+│       └── index.js (calls sidebar and navbar components)
+│   └── HomePage
+│       └── index.js (calls menu controller, page component, ...)
+│   └── DetailPage.js
+│       └── CoachDetailPage.js
+│       └── EventDetailPage.js
 │   └── ...
-├── views/presentational
-│   └── admin
-│       └── ...
-│   └── auth
-│       └── Login.js
-│       └── Signup.js
+├── components
 │   └── common
 │       └── Button.js
 │       └── H1.js
@@ -156,30 +90,13 @@ components
 │       └── Footer.js
 │       └── List.js
 │       └── ...
-│   └── About.js
-│   └── FitnessFacts.js
-│   └── User.js
 │   └── ...
 ```
 
-Notes:
-- Controllers examples: UserPage, FollowersSidebar, StoryContainer, FollowedUserList
-  - can be stateless
-- Views examples: Page, Sidebar, Story, UserInfo, List
-  - are only presentational, but can have state (UI state rather than data)
-- See: https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0 and https://gist.github.com/chantastic/fc9e3853464dffdb1e3c
-
-### Naming conventions
-- Components: lower case, dashed names with .jsx extension
+### Naming/Coding conventions
 - Tests: Either it's for UI or state, always use `.spec.js`
-
-### Coding conventions
-- one react component per file
-
-### Structure
-- Smart components + Route wrappers + dumb components ?
-- Not all pages will be smart: static pages such as about are merely presentational.
-- A separation by smart/dumb components makes it easier to apply rules such as "dumb components don't expose anything to the outside"
+- One react component per file
+- See [airbnb style guides](https://github.com/airbnb/javascript/tree/master/react)
 
 
 ### Internationalization

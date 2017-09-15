@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import Button from './../components/common/button.jsx';
-import WorkoutListItem from './../components/workout-list-item.jsx';
-import GroupListItem from './../components/group-list-item.jsx'
-import withFilter from './../components/common/withFilter.jsx'
+import Button from 'components/common/Button';
+import WorkoutListItem from 'components/ListItem/WorkoutListItem';
+import GroupListItem from 'components/ListItem/GroupListItem'
+import withFilter from 'components/common/withFilter'
 import {
   PATH_BASE,
   PATH_EVENTS,
@@ -21,7 +21,7 @@ import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   DEFAULT_ORDER,
-} from './../config'
+} from 'config'
 const EVENT_SORT = 'date_begin';
 const GROUP_SORT = 'rank';
 

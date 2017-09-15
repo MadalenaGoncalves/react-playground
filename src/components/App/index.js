@@ -1,11 +1,11 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import HomePage from './../containers/home-page.jsx'
-import Sidebar from './layout/sidebar.jsx'
-import About from './about.jsx'
-import User from './user.jsx'
-import WorkoutDetailPage from './../containers/workout-detail-page.jsx'
-import GroupDetailPage from './../containers/group-detail-page.jsx'
+import HomePage from 'containers/HomePage'
+import Sidebar from 'components/layout/Sidebar'
+import AboutPage from 'containers/AboutPage'
+import UserPage from 'containers/UserPage'
+import WorkoutDetailPage from 'containers/DetailPage/WorkoutDetailPage'
+import GroupDetailPage from 'containers/DetailPage/GroupDetailPage'
 
 const rootRoutes = [
   { path: '/',
@@ -15,12 +15,12 @@ const rootRoutes = [
   },
   { path: '/about',
     sidebar: () => <div>/about</div>,
-    main: () => <About />
+    main: () => <AboutPage />
   },
   {
     path: '/user',
     sidebar: () => <div>/user</div>,
-    main: () => <User />
+    main: () => <UserPage />
   },
   {
     path: '/workout/:id',
