@@ -1,5 +1,5 @@
 import React from 'react'
-import { PATH_BASE, PATH_GROUP } from 'config.js'
+import { PATH_BASE, PATH_GROUP } from 'containers/constants'
 
 class GroupDetailPage extends React.Component {
   constructor(props) {

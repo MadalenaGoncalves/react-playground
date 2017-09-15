@@ -21,7 +21,7 @@ import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   DEFAULT_ORDER,
-} from 'config'
+} from 'containers/constants'
 const EVENT_SORT = 'date_begin';
 const GROUP_SORT = 'rank';
 

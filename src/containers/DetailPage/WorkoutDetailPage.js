@@ -2,7 +2,7 @@ import React from 'react'
 // import { PropTypes } from 'prop-types'
 import moment from 'moment'
 import Button from 'components/common/Button'
-import { PATH_BASE, PATH_EVENT } from 'config.js'
+import { PATH_BASE, PATH_EVENT } from 'containers/constants'
 
 class WorkoutDetailPage extends React.Component {
   constructor(props) {
