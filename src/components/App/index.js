@@ -4,13 +4,11 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import routes from 'routes'
 import Page from 'components/layout/Page'
 
-const history = createBrowserHistory()
+// const history = createBrowserHistory()
+// <Router history={history} onUpdate={() => window.scrollTo(0, 0)} />
 
 const App = (props) =>
-  <BrowserRouter
-    history={history}
-    onUpdate={() => window.scrollTo(0, 0)}
-  >
+  <BrowserRouter>
     <Page>
       <div style={{ flex: 1, padding: '10px' }}>
         {routes.map((route, index) => (

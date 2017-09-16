@@ -117,6 +117,8 @@ External libraries or services are kept in `/src/services`. Think of these as al
 - Tests: All test files (UI or state), use `.spec.js`
 - One react component per file
 
+## Server-side rendering
+Beginners guides for SSR with node and express [here](https://scotch.io/tutorials/react-on-the-server-for-beginners-build-a-universal-react-and-node-app) and [here](https://loige.co/my-universal-javascript-web-applications-talk-at-codemotion-rome-2017/)
 
 ### Internationalization
 (To be decided... )
