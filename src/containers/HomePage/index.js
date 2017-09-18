@@ -28,6 +28,7 @@ const GROUP_SORT = 'rank';
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
+
     let initialData;
     if (props.staticContext) {
       initialData = props.staticContext.initialData;
@@ -38,8 +39,8 @@ export default class HomePage extends Component {
     }
 
     this.state = {
-      events: initialData,
-      // groups: initialData.groups,
+      events: null,
+      groups: null,
       coaches: ['Livia', 'Andreas', 'Kristina'],
       places: ['Weinbergspark', 'Lietzensee'],
     };
@@ -51,11 +52,32 @@ export default class HomePage extends Component {
     this.onChangeFilter = this.onChangeFilter.bind(this);
   }
 
+  setEventInitialState = (initialData) => {
+    const { events, meta } = initialData;
+    const date = moment().format('YYYY-MM-DDThh:00:00');
+    const oldEvents = this.state.events && this.state.events[date] ? this.state.events[date].list : [];
+
+    const updatedEvents = [...oldEvents,...events];
+
+    return {
+      [date]: {
+        list : updatedEvents,
+        page: meta.page,
+        total: meta.rowCount,
+        retrieved: meta.pageSize*meta.page,
+      },
+    };
+  }
+
   componentDidMount() {
     // this.fetchEvents((moment().format()), DEFAULT_PAGE);
     // this.fetchGroups();
+    console.log("running componentDidMount");
     HomePage.requestInitialData()
-      .then(result => this.setEvents(result))
+      .then(result => {
+        console.log("received data", result);
+        return this.setEvents(result)
+      })
   }
 
   static requestInitialData() {
@@ -70,7 +92,6 @@ export default class HomePage extends Component {
       + `&${PARAM_PAGE_SIZE}${DEFAULT_PAGE_SIZE}`
       + `&${PARAM_SORT}${EVENT_SORT}`;
 
-    console.log('@requestInitialData', requestURL);
     return fetch(requestURL)
       .then(response => response.json())
   }
