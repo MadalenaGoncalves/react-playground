@@ -7,28 +7,30 @@ import GroupDetailPage from 'containers/DetailPage/GroupDetailPage'
 
 
 const routes = [
-  { path: '/',
+  {
+    path: '/',
     exact: true,
-    sidebar: () => <div>/</div>,
-    main: () => <HomePage />
-  },
-  { path: '/about',
-    sidebar: () => <div>/about</div>,
-    main: () => <AboutPage />
+    component: HomePage
   },
   {
+    path: '/about',
+    component: AboutPage
+  },
+  {
+
     path: '/user',
-    sidebar: () => <div>/user</div>,
-    main: () => <UserPage />
+    component: UserPage
   },
-  {
-    path: '/workout/:id',
-    main: (props) => <WorkoutDetailPage {...props} />
-  },
-  {
-    path: '/group/:id',
-    main: (props) => <GroupDetailPage {...props} />
-  }
+  // {
+  //
+  //   path: '/workout/:id',
+  //   main: (props) => <WorkoutDetailPage {...props} />
+  // },
+  // {
+  //
+  //   path: '/group/:id',
+  //   main: (props) => <GroupDetailPage {...props} />
+  // }
 ];
 
 

@@ -1,49 +1,49 @@
-require('import-export') // node does not support yet the imports and exports
-
-const http = require('http')
-const path = require('path')
-// const fs = require('fs')
-const express = require('express')
-const React = require('react')
-const reactDomServer = require('react-dom/server')
-const reactRouter = require('react-router')
-
-const renderToString = reactDomServer.renderToString
-const match = reactRouter.match
-const RouterContext = reactRouter.RouterContext
-
-const staticFiles = [
-  '/static/*',
-  'asset-manifest.json',
-  'favicon.ico',
-  'index.html',
-  'manifest.json',
-  'logo.svg'
-]
+import serialize from 'serialize-javascript'
+import express from 'express'
+import React from 'react'
+import { renderToString } from 'react-dom/server'
+import { matchPath } from 'react-router-dom'
+import { StaticRouter } from 'react-router'
+import 'isomorphic-fetch'
+import App from 'components/App'
+import routes from 'routes'
 
 const app = express()
-app.server = http.createServer(app)
 
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static('../build'))
 
+app.get('*', (req, res) => {
+  const currentRoute = routes.find(route => matchPath(req.url, route));
+  const requestInitialData = currentRoute.component.requestInitialData && currentRoute.component.requestInitialData();
 
-staticFiles.forEach(file => {
-  app.get(file, (req, res) => {
-    const filePath = path.join(__dirname, '../build', req.url )
-    res.sendFile(filePath)
-  })
+  console.log('currentRoute', currentRoute);
+  console.log('requestInitialData', requestInitialData);
+
+  Promise.resolve(requestInitialData)
+    .then(initialData => {
+      const context = {initialData}
+      const markup = renderToString(
+        <StaticRouter location={req.url} context={context}>
+          <App />
+        </StaticRouter>
+      )
+
+      res.send(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Universal React</title>
+            <script src="/bundle.js" defer></script>
+            <script>window.__initialData__ = ${serialize(initialData)}</script>
+          </head>
+          <body>
+            <div id="root">${markup}</div>
+          </body>
+        </html>
+      `)
+    })
 })
 
-// app.get('*', (req, url) => {
-//   const htmlFilePath = path.join(__dirname, '../build', 'index.html')
-//   fs.readFile(htmlFilePath, 'utf8', (err, htmlDate) => {
-//     if(err) {
-//
-//     }
-//   })
-// })
-
-
-app.server.listen(process.env.PORT || 3000, () => {
-  console.log(`Listing on http://localhost:${(app.server.address().port)}`)
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Server is listening')
 })

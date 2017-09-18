@@ -28,39 +28,51 @@ const GROUP_SORT = 'rank';
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
+    let initialData;
+    if (props.staticContext) {
+      initialData = props.staticContext.initialData;
+    }
+    else {
+      initialData = window.__initialData__;
+      delete window.__initialData__;
+    }
 
     this.state = {
-      events: null,
-      groups: null,
+      events: initialData,
+      // groups: initialData.groups,
       coaches: ['Livia', 'Andreas', 'Kristina'],
       places: ['Weinbergspark', 'Lietzensee'],
     };
 
     this.fetchEvents = this.fetchEvents.bind(this);
     this.setEvents = this.setEvents.bind(this);
-    this.fetchGroups = this.fetchGroups.bind(this);
-    this.setGroups = this.setGroups.bind(this);
+    // this.fetchGroups = this.fetchGroups.bind(this);
+    // this.setGroups = this.setGroups.bind(this);
     this.onChangeFilter = this.onChangeFilter.bind(this);
   }
 
   componentDidMount() {
-    this.fetchEvents((moment().format()), DEFAULT_PAGE);
-    this.fetchGroups();
+    // this.fetchEvents((moment().format()), DEFAULT_PAGE);
+    // this.fetchGroups();
+    HomePage.requestInitialData()
+      .then(result => this.setEvents(result))
   }
 
-  fetchGroups() {
-    try {
-      fetch(`${PATH_BASE}${PATH_GROUPS}?${PARAM_HAS_TAGS}${DEFAULT_HAS_TAGS}&${PARAM_IS_PUBLISHED}${DEFAULT_IS_PUBLISHED}&${PARAM_ORDER}${DEFAULT_ORDER}&${PARAM_SORT}${GROUP_SORT}`)
-        .then(response => response.json())
-        .then(result => this.setGroups(result))
-    }
-    catch(e) {
-      console.log('Error @fetchGroups ', e);
-    }
-  }
+  static requestInitialData() {
+    const dateBegin = encodeURIComponent(moment().format());
+    const page = DEFAULT_PAGE;
+    let requestURL = `${PATH_BASE}${PATH_EVENTS}`
+      + `?${PARAM_BEGINS_AFTER}${dateBegin}`
+      + `&${PARAM_HAS_TAGS}${DEFAULT_HAS_TAGS}`
+      + `&${PARAM_IS_PUBLISHED}${DEFAULT_IS_PUBLISHED}`
+      + `&${PARAM_ORDER}${DEFAULT_ORDER}`
+      + `&${PARAM_PAGE}${page}`
+      + `&${PARAM_PAGE_SIZE}${DEFAULT_PAGE_SIZE}`
+      + `&${PARAM_SORT}${EVENT_SORT}`;
 
-  setGroups(result) {
-    this.setState({ groups: result.groups });
+    console.log('@requestInitialData', requestURL);
+    return fetch(requestURL)
+      .then(response => response.json())
   }
 
   fetchEvents(dateBegin, page) {
@@ -77,7 +89,7 @@ export default class HomePage extends Component {
     try {
       fetch(requestURL)
       .then(response => response.json())
-      .then(result => this.setEvents(result))
+      // .then(result => this.setEvents(result))
     }
     catch(e) {
       console.log('Error @fetchEvents ', e);
@@ -103,6 +115,21 @@ export default class HomePage extends Component {
       }
     });
   }
+
+  // fetchGroups() {
+  //   try {
+  //     fetch(`${PATH_BASE}${PATH_GROUPS}?${PARAM_HAS_TAGS}${DEFAULT_HAS_TAGS}&${PARAM_IS_PUBLISHED}${DEFAULT_IS_PUBLISHED}&${PARAM_ORDER}${DEFAULT_ORDER}&${PARAM_SORT}${GROUP_SORT}`)
+  //       .then(response => response.json())
+  //       .then(result => this.setGroups(result))
+  //   }
+  //   catch(e) {
+  //     console.log('Error @fetchGroups ', e);
+  //   }
+  // }
+  //
+  // setGroups(result) {
+  //   this.setState({ groups: result.groups });
+  // }
 
   fetchEventsByDistrict(dateBegin, page, district = null) {
     dateBegin = encodeURIComponent(dateBegin);
@@ -154,13 +181,13 @@ export default class HomePage extends Component {
   }
 
   render() {
-    const { events, coaches, places, groups } = this.state;
+    const { events, coaches, places /*, groups*/ } = this.state;
     const date = moment().format('YYYY-MM-DDThh:00:00');
     const page = (events && events[date] && events[date].page) || 0;
     const eventList = (events && events[date] && events[date].list) || [];
     const total = (events && events[date] && events[date].total) || 0;
     const retrieved = (events && events[date] && events[date].retrieved) || 0;
-    const groupList = groups || [];
+    // const groupList = groups || [];
 
     const filterList = [
       { value: 'mitte', label: 'Mitte' },
@@ -195,10 +222,10 @@ export default class HomePage extends Component {
 
         <br />
 
-        <h3>Our Groups</h3>
+        {/* <h3>Our Groups</h3>
         {groupList.map( (group) =>
           <GroupListItem key={group.id} item={group} />
-        )}
+        )} */}
 
         <br />
 
